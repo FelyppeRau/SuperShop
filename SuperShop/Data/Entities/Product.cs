@@ -5,7 +5,7 @@ using System.Data;
 
 namespace SuperShop.Data.Entities
 {
-    public class Product
+    public class Product : IEntity  // "IEntity" foi adicionado quando criamos o repositório genérico - Video 8
     {
 
         public int Id { get; set; } // Ao colocarmos "Id" já é criado como chave primária.
