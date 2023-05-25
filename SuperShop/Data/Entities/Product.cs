@@ -7,6 +7,7 @@ namespace SuperShop.Data.Entities
 {
     public class Product
     {
+
         public int Id { get; set; } // Ao colocarmos "Id" já é criado como chave primária.
                                     // Caso o nome seja outro, por exemplo "IdProduct" deve-se colocar um [KEY] acima da propriedade para adicionar using "DataAnnotations"
 

@@ -30,6 +30,11 @@ namespace SuperShop
                 cfg.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            services.AddTransient<SeedDb>(); // Transient cria o objecto e depois deita fora... Neste caso aqui só volta a criá-lo quando eu corro a aplicação
+
+            //services.AddSingleton<> // Singlenton cria o objecto e mantém ele na aplicação
+
+            //services.AddScoped // Scoped cria o objecto e já está instanciado. Quando volto a criá-lo novamente, deita fora o que lá está e sobrepõe
 
             services.AddControllersWithViews();
         }
