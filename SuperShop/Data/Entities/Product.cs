@@ -32,5 +32,7 @@ namespace SuperShop.Data.Entities
 
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = false)] // O ApplyFormatEditMode = false faz com que a edição não precise ser como duas casas decimais. 
         public double Stock { get; set; }
+
+        public User User { get; set; }
     }
 }

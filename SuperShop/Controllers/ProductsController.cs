@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using SuperShop.Data;
 using SuperShop.Data.Entities;
+using SuperShop.Helpers;
+using System.Linq;
 using System.Threading.Tasks;
 
 
@@ -11,17 +13,19 @@ namespace SuperShop.Controllers
     {
         
         private readonly IProductRepository _productRepository;
+        private readonly IUserHelper _userHelper; // inserir o "_" depois de inserir o field
 
-        public ProductsController(IProductRepository productRepository)
+        public ProductsController(IProductRepository productRepository, IUserHelper userHelper) // ctrl. para inserir o field
         {
            
             _productRepository = productRepository;
+            _userHelper = userHelper; // inserir o "_" depois de inserir o field
         }
 
         // GET: Products
         public IActionResult Index()
         {
-            return View(_productRepository.GetAll());
+            return View(_productRepository.GetAll().OrderBy(p => p.Name)); // ORDENAR!!!!!!!!!!!!!!!!!!!!!
         }
 
         // GET: Products/Details/5
@@ -57,6 +61,9 @@ namespace SuperShop.Controllers
         {
             if (ModelState.IsValid)
             {
+                //TODO: Modificar para o User que estiver logado
+                product.User = await _userHelper.GetUserByEmailAsync("felypperau@gmail.com");
+
                 await _productRepository.CreateAsync(product);
                 
                 return RedirectToAction(nameof(Index));
@@ -97,7 +104,10 @@ namespace SuperShop.Controllers
             {
                 try
                 {
-                   await _productRepository.UpdateAsync(product);
+                    //TODO: Modificar para o User que estiver logado
+                    product.User = await _userHelper.GetUserByEmailAsync("felypperau@gmail.com"); // Aqui devemos confirmar o User assim como no Post Create
+
+                    await _productRepository.UpdateAsync(product);
                     
                 }
                 catch (DbUpdateConcurrencyException)
