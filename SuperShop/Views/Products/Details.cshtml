@@ -25,10 +25,10 @@
                     @Html.DisplayFor(model => model.Price)
                 </dd>
                 <dt class = "col-sm-3">
-                    @Html.DisplayNameFor(model => model.ImageUrl)
+                    @Html.DisplayNameFor(model => model.ImageId)
                 </dt>
                 <dd class = "col-sm-9">
-                    @Html.DisplayFor(model => model.ImageUrl)
+                    @Html.DisplayFor(model => model.ImageId)
                 </dd>
                 <dt class = "col-sm-3">
                     @Html.DisplayNameFor(model => model.LastPurchase)
@@ -57,9 +57,9 @@
             </dl>
         </div>
         <div class="col-md-4">
-            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            @if (!string.IsNullOrEmpty(Model.ImageFullPath)) // JÁ ESTÁ A FAZER A VALIDAÇÃO NA CLASSE. NÃO PRECISA MANTER AQUI
             {
-                <img src="@Url.Content(Model.ImageUrl)" alt="Image" style="width:200px; height:350px; max-width:100%; height:auto">
+                <img src="@Url.Content(Model.ImageFullPath)" alt="Image" style="width:200px; height:350px; max-width:100%; height:auto">
             }
         </div>
     </div>

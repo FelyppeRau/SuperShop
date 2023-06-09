@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SuperShop.Data;
 using SuperShop.Data.Entities;
 using SuperShop.Helpers;
 using SuperShop.Models;
-using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 
 namespace SuperShop.Controllers
@@ -16,16 +16,18 @@ namespace SuperShop.Controllers
     {
         // inserir o "_" depois de inserir o field
         private readonly IProductRepository _productRepository;
-        private readonly IUserHelper _userHelper; 
-        private readonly IImageHelper _imageHelper;
+        private readonly IUserHelper _userHelper;
+        //private readonly IImageHelper _imageHelper; // RETIRADO APÓS O BLOB AZURE
+        private readonly IBlobHelper _blobHelper;
         private readonly IConverterHelper _converterHelper;
 
-        public ProductsController(IProductRepository productRepository, IUserHelper userHelper, IImageHelper imageHelper, IConverterHelper converterHelper) // ctrl. para inserir o field
+        public ProductsController(IProductRepository productRepository, IUserHelper userHelper, IBlobHelper blobHelper, IConverterHelper converterHelper) // ctrl. para inserir o field
         {
             // inserir o "_" depois de inserir o field
             _productRepository = productRepository;
             _userHelper = userHelper; 
-            _imageHelper = imageHelper;
+            //_imageHelper = imageHelper; // RETIRADO APÓS O BLOB AZURE
+            _blobHelper = blobHelper;
             _converterHelper = converterHelper;
         }
 
@@ -68,16 +70,19 @@ namespace SuperShop.Controllers
         {
             if (ModelState.IsValid)
             {
-                var path = string.Empty;
+                //var path = string.Empty; // RETIRADO APÓS O BLOB AZURE
 
-                if(model.ImageFile != null && model.ImageFile.Length > 0) // Verificar se tem imagem
+                Guid imageId = Guid.Empty;
+
+                if (model.ImageFile != null && model.ImageFile.Length > 0) // Verificar se tem imagem
                 {
 
-                    path = await _imageHelper.UploadImageAsync(model.ImageFile, "products");
+                    //path = await _imageHelper.UploadImageAsync(model.ImageFile, "products");  // RETIRADO APÓS O BLOB AZURE
+                    imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "products");
 
                 }
 
-                var product = _converterHelper.ToProduct(model, path, true); // True porque é novo
+                var product = _converterHelper.ToProduct(model, imageId, true); // True porque é novo
 
 
                 //TODO: Modificar para o User que estiver logado
@@ -125,15 +130,16 @@ namespace SuperShop.Controllers
             {
                 try
                 {
-                    var path = model.ImageUrl;
+                    //var path = model.ImageUrl;
+                    Guid imageId = model.ImageId;
                          
                     if(model.ImageFile != null && model.ImageFile.Length > 0) // Verificar se tem imagem
                     {
 
-                        path = await _imageHelper.UploadImageAsync(model.ImageFile, "products");
+                        imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "products");
                     }
 
-                    var product = _converterHelper.ToProduct(model, path, false); // False porque não é novo.
+                    var product = _converterHelper.ToProduct(model, imageId, false); // False porque não é novo.
                    
 
                     //TODO: Modificar para o User que estiver logado

@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
+using static System.Net.WebRequestMethods;
 
 namespace SuperShop.Data.Entities
 {
@@ -18,34 +19,43 @@ namespace SuperShop.Data.Entities
         [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)] // O ApplyFormatEditMode = false faz com que a edição não precise ser como duas casas decimais. 
         public decimal Price { get; set; }
 
-        [Display(Name = "Image")] // Aqui é a forma como esse campo aparecerá na página Web. Neste caso "Image"
-        public string ImageUrl { get; set; }
+        //[Display(Name = "Image")] // Aqui é a forma como esse campo aparecerá na página Web. Neste caso "Image"
+        //public string ImageUrl { get; set; } // RETIRADO APÓS O BOLB NO AZURE
+
+        [Display(Name = "Image")]
+        public Guid ImageId { get; set; }
 
         [Display(Name = "Last Purchase")]
         public DateTime? LastPurchase { get; set; } // O "?" faz com que NÃO seja obrigatório o preenchimento
 
         [Display(Name = "Last Sale")]
         public DateTime? LastSale { get; set; } // O "?" faz com que NÃO seja obrigatório o preenchimento
-
+         
         [Display(Name = "Is Available")]
         public bool IsAvailable { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = false)] // O ApplyFormatEditMode = false faz com que a edição não precise ser como duas casas decimais. 
-        public double Stock { get; set; }
+        public double Stock { get; set; } 
 
         public User User { get; set; }
 
-        public string ImageFullPath
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(ImageUrl))
-                {
-                    return null;
-                }
+        public string ImageFullPath => ImageId == Guid.Empty
+            ? $"https://localhost:44391/images/noimage.png"
+            : $"https://supershop.blob.core.windows.net/products/{ImageId}";
 
-                return $"https://localhost:44391{ImageUrl.Substring(1)}";
-            }
-        }
+
+
+        // RETIRADO APÓS O BLOB NO AZURE
+        //{
+        //    get
+        //    {
+        //        if (string.IsNullOrEmpty(ImageUrl))
+        //        {
+        //            return null;
+        //        }
+
+        //        return $"https://localhost:44391{ImageUrl.Substring(1)}";
+        //    }
+        //}
     }
 }
