@@ -93,7 +93,7 @@ namespace SuperShop
 
             app.UseRouting();
 
-            app.UseAuthentication();
+            app.UseAuthentication(); // Servirá para o Login. DEVE estar ANTES do Authorization()
 
             app.UseAuthorization();
 

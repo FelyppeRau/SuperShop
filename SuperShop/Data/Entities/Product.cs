@@ -40,8 +40,10 @@ namespace SuperShop.Data.Entities
         public User User { get; set; }
 
         public string ImageFullPath => ImageId == Guid.Empty
-            ? $"https://localhost:44391/images/noimage.png"
+            ? $"/images/noimage.png" /*https://localhost:44391*/ // CAMINHO RELATIVO PARA AS IMAGENS
             : $"https://supershop.blob.core.windows.net/products/{ImageId}";
+
+
 
 
 

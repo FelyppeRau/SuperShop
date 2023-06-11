@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SuperShop.Data;
@@ -12,6 +13,7 @@ using SuperShop.Models;
 
 namespace SuperShop.Controllers
 {
+    /*[Authorize] */// SIGNIFICA SE SÓ PODERÃO ENTRAR NOS PRODUTOS OS QUE FIZEREM LOGIN VÁLIDO
     public class ProductsController : Controller
     {
         // inserir o "_" depois de inserir o field
@@ -54,8 +56,9 @@ namespace SuperShop.Controllers
 
             return View(product);
         }
-         
+
         // GET: Products/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -95,9 +98,10 @@ namespace SuperShop.Controllers
             return View(model);
         }
 
-        
+
 
         // GET: Products/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -165,6 +169,7 @@ namespace SuperShop.Controllers
         }
 
         // GET: Products/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
