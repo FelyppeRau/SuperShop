@@ -28,12 +28,16 @@ namespace SuperShop.Data
         {
             await _context.Database.EnsureCreatedAsync(); // Verifica se a BD está criada. Se não estiver, CRIA. Caso já esteja criada, segue...
 
+            
+            await _userHelper.CheckRoleAsync("Admin"); // Verifica se existe o role Admin. Caso não tenha, cria!
+            await _userHelper.CheckRoleAsync("Customer"); // Verifica se existe o role Customer. Caso não tenha, cria!
+
             //***CRIA A BD PRIMEIRO DEPOIS OS USERS***
 
             // var user = await _userManager.FindByEmailAsync("felypperau@gmail.com"); // Verifica se o User existe. Se for null, cria o User.
             var user = await _userHelper.GetUserByEmailAsync("felypperau@gmail.com"); // Verifica se o User existe. Se for null, cria o User.
 
-            if (user == null)
+            if (user == null) // Se não existir User, cria!
             {
                 user = new User
                 {
@@ -52,6 +56,15 @@ namespace SuperShop.Data
                 {
                     throw new InvalidOperationException("Could not create the user in seeder"); // Caso não crie o User saberemos onde o programa estourou. Me dá uma exeção
                 }
+                                
+                await _userHelper.AddUserToRoleAsync(user, "Admin");
+            }
+
+            var isInRole = await _userHelper.IsUserInRoleAsync(user, "Admin");
+
+            if (!isInRole)
+            {
+                await _userHelper.AddUserToRoleAsync(user, "Admin");
             }
 
             if (!_context.Products.Any()) 
