@@ -37,7 +37,7 @@ namespace SuperShop.Data
             {
                 user = new User
                 {
-                    FisrtName = "Jorge",
+                    FirstName = "Jorge",
                     LastName = "Pinto",
                     Email = "felypperau@gmail.com",
                     UserName = "felypperau@gmail.com",

@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -48,7 +50,7 @@ namespace SuperShop.Controllers
                 }
             }
 
-            this.ModelState.AddModelError(string.Empty, "Failed to login");
+            this.ModelState.AddModelError(string.Empty, "Failed to login!");
             return View(model);
         }
 
@@ -59,6 +61,7 @@ namespace SuperShop.Controllers
         }
 
 
+        // Aqui só aparece a View
         public IActionResult Register() //"Botão Direito" -> AddView
         {
             return View();
@@ -75,7 +78,7 @@ namespace SuperShop.Controllers
                 {
                     user = new User
                     {
-                        FisrtName = model.FirstName,
+                        FirstName = model.FirstName,
                         LastName = model.LastName,
                         Email = model.UserName,
                         UserName = model.UserName,
@@ -114,8 +117,84 @@ namespace SuperShop.Controllers
 
         }
 
+        // Aqui só aparece a View
+        public async Task<IActionResult> ChangeUser()
+        {
+            var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+            var model = new ChangeUserViewModel();
+            
+            if (user != null)
+            {
+                model.FirstName = user.FirstName;
+                model.LastName = user.LastName;
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]  // Aqui é que de fato valida as informações
+        public async Task<IActionResult> ChangeUser(ChangeUserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+
+                if (user != null)
+                {
+                    user.FirstName = model.FirstName;
+                    user.LastName = model.LastName;
+                    var response = await _userHelper.UpdateUserAsync(user);
+
+                    if (response.Succeeded)
+                    {
+                        ViewBag.UserMessage = "User Updated!";
+                    }
+
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, response.Errors.FirstOrDefault().Description);
+                    }                   
+                }
+            }               
+
+            return View(model);
+          
+        }
+
+        // Aqui só aparece a View
+        public IActionResult ChangePassword() //"Botão Direito" -> AddView
+        {
+            return View();
+        }
+
+
+        [HttpPost]  // Aqui é que de fato valida as informações
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (ModelState.IsValid) 
+            {
+                var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+
+                if (user != null)
+                {
+                    var result = await _userHelper.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+
+                    if (result.Succeeded)
+                    {
+                        return this.RedirectToAction("ChangeUser");
+                    }
+
+                    else
+                    {
+                        this.ModelState.AddModelError(string.Empty, "User not found.");
+                    }
+                }
+                                
+
+            }
+
+            return this.View(model);
+        }
     }
-
-
 
 }
