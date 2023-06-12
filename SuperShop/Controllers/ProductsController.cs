@@ -88,8 +88,10 @@ namespace SuperShop.Controllers
                 var product = _converterHelper.ToProduct(model, imageId, true); // True porque é novo
 
 
-                //TODO: Modificar para o User que estiver logado
-                product.User = await _userHelper.GetUserByEmailAsync("felypperau@gmail.com");
+                //TODOoooo: Modificar para o User que estiver logado
+                //product.User = await _userHelper.GetUserByEmailAsync("felypperau@gmail.com");
+
+                product.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
 
                 await _productRepository.CreateAsync(product);
                 
@@ -144,10 +146,12 @@ namespace SuperShop.Controllers
                     }
 
                     var product = _converterHelper.ToProduct(model, imageId, false); // False porque não é novo.
-                   
 
-                    //TODO: Modificar para o User que estiver logado
-                    product.User = await _userHelper.GetUserByEmailAsync("felypperau@gmail.com"); // Aqui devemos confirmar o User assim como no Post Create
+
+                    //TODOooo: Modificar para o User que estiver logado
+                    //product.User = await _userHelper.GetUserByEmailAsync("felypperau@gmail.com"); // Aqui devemos confirmar o User assim como no Post Create
+
+                    product.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
 
                     await _productRepository.UpdateAsync(product);
                     
