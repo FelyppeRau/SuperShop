@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - SuperShop</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" /> @*Usar sempre a versão minificada*@
+    <link href="https://fonts.googleapis.com/css?family=Raleway:500,800" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
@@ -25,7 +26,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products</a> 
                         </li>
-                        @if(this.User.Identity.IsAuthenticated && this.User.IsInRole("Admin")) // Verifica se o User está autenticado e se é o Admin!!
+                        @if(this.User.Identity.IsAuthenticated && this.User.IsInRole("Admin")) // Verifica se o User está autenticado e se é o Admin!!  ***** SÓ APARECE O MENU PARA O ADMIN *****
                         {
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>

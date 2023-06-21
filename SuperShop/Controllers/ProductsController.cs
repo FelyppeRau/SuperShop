@@ -44,14 +44,16 @@ namespace SuperShop.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                //return NotFound(); //Alterado qndo criamos o NotFoundViewResult - Video 21
+                return new NotFoundViewResult("ProductNotFound"); // Aqui passamos as Views que desejamos
             }
 
             var product = await _productRepository.GetByIdAsync(id.Value); // como o parâmetro na linha 27 está definido como opcional (?) devemos por .Value
                                                                            // pois caso seja null ele saberá tratar e não arrebentará com a aplicação 
             if (product == null)
             {
-                return NotFound();
+                //return NotFound(); //Alterado qndo criamos o NotFoundViewResult - Video 21
+                return new NotFoundViewResult("ProductNotFound"); // Aqui passamos as Views que desejamos
             }
 
             return View(product);
@@ -108,14 +110,16 @@ namespace SuperShop.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                //return NotFound(); //Alterado qndo criamos o NotFoundViewResult - Video 21
+                return new NotFoundViewResult("ProductNotFound"); // Aqui passamos as Views que desejamos
             }
 
             var product = await _productRepository.GetByIdAsync(id.Value);
 
             if (product == null)
             {
-                return NotFound();
+                //return NotFound(); //Alterado qndo criamos o NotFoundViewResult - Video 21
+                return new NotFoundViewResult("ProductNotFound"); // Aqui passamos as Views que desejamos
             }
 
            
@@ -160,7 +164,8 @@ namespace SuperShop.Controllers
                 {
                     if (!await _productRepository.ExistAsync(model.Id))
                     {
-                        return NotFound();
+                        //return NotFound(); //Alterado qndo criamos o NotFoundViewResult - Video 21
+                        return new NotFoundViewResult("ProductNotFound"); // Aqui passamos as Views que desejamos
                     }
                     else
                     {
@@ -178,13 +183,15 @@ namespace SuperShop.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                //return NotFound(); //Alterado qndo criamos o NotFoundViewResult - Video 21
+                return new NotFoundViewResult("ProductNotFound"); // Aqui passamos as Views que desejamos
             }
 
             var product = await _productRepository.GetByIdAsync(id.Value);
             if (product == null)
             {
-                return NotFound();
+                //return NotFound(); //Alterado qndo criamos o NotFoundViewResult - Video 21
+                return new NotFoundViewResult("ProductNotFound"); // Aqui passamos as Views que desejamos
             }
 
             return View(product);
@@ -198,6 +205,11 @@ namespace SuperShop.Controllers
             var product = await _productRepository.GetByIdAsync(id);
             await _productRepository.DeleteAsync(product);            
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult ProductNotFound()
+        {
+            return View();
         }
 
     }

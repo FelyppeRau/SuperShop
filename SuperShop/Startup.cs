@@ -60,6 +60,12 @@ namespace SuperShop
 
             services.AddScoped<IProductRepository, ProductRepository>(); // ** Aqui podemos fazer testes.. / Modificar o "Repository"
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/NotAuthorized";   //Aparece a View quw criamos. É o contrário do ReturnUrl
+                options.AccessDeniedPath = "/Account/NotAuthorized";  //Aparece a View quw criamos. É o contrário do ReturnUrl
+            });
+
             services.AddControllersWithViews(); 
 
 
@@ -87,6 +93,9 @@ namespace SuperShop
             }
 
             //DEVE ESTAR EM ORDEM
+
+            app.UseStatusCodePagesWithReExecute("/error/{0}"); // Devemos fazer a IAction no primeiro controlador que arranca a aplicação (IActionResult Error404())
+
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();

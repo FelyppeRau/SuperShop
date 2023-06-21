@@ -186,14 +186,25 @@ namespace SuperShop.Controllers
 
                     else
                     {
-                        this.ModelState.AddModelError(string.Empty, "User not found.");
+                        this.ModelState.AddModelError(string.Empty, result.Errors.FirstOrDefault().Description); //Aparece msg caso a senha antiga esteja incorreta
                     }
+
                 }
-                                
+
+                else
+                {
+                    this.ModelState.AddModelError(string.Empty, "User not found.");
+                }
+
 
             }
 
             return this.View(model);
+        }
+
+        public IActionResult NotAuthorized()
+        {
+            return View();
         }
     }
 
