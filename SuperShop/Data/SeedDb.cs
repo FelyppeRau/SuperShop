@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SuperShop.Data.Entities;
 using SuperShop.Helpers; 
 
@@ -27,8 +28,8 @@ namespace SuperShop.Data
         public async Task SeedAsync()
         {
             await _context.Database.EnsureCreatedAsync(); // Verifica se a BD está criada. Se não estiver, CRIA. Caso já esteja criada, segue...
+            await _context.Database.MigrateAsync(); // Inserido para que corra em conjunto com o SeedDb - Video 22 / 31"
 
-            
             await _userHelper.CheckRoleAsync("Admin"); // Verifica se existe o role Admin. Caso não tenha, cria!
             await _userHelper.CheckRoleAsync("Customer"); // Verifica se existe o role Customer. Caso não tenha, cria!
 
