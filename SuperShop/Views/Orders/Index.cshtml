@@ -25,8 +25,7 @@
                 @Html.DisplayNameFor(model => model.DeliveryDate)
             </th>
             <th>
-                @*@Html.DisplayNameFor(model => model.Lines)*@
-                #LINES
+               # LINES
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Quantity)
@@ -44,24 +43,23 @@
                 @if (this.User.IsInRole("Admin"))
                 {
                     <th>
-                        @Html.DisplayNameFor(modelItem => item.User.FullName)
+                        @Html.DisplayFor(modelItem => item.User.FullName)
                     </th>
                 }
                 <td>
-                    @Html.DisplayNameFor(modelItem => item.OrderDate)
+                    @Html.DisplayFor(modelItem => item.OrderDate)
                 </td>
                 <td>
-                    @Html.DisplayNameFor(modelItem => item.DeliveryDate)
+                    @Html.DisplayFor(modelItem => item.DeliveryDate)
                 </td>
                 <td>
-                    @*@Html.DisplayNameFor(modelItem => item.Lines)*@
-                    #LINES
+                    #
                 </td>
                 <td>
-                    @Html.DisplayNameFor(modelItem => item.Quantity)
+                    @Html.DisplayFor(modelItem => item.Quantity)
                 </td>
                 <td>
-                    @Html.DisplayNameFor(modelItem => item.Value)
+                    @Html.DisplayFor(modelItem => item.Value)
                 </td>
                 <td>
                     <a asp-action="Deliver" asp-route-id="@item.Id" class="btn btn-info" id="btnDeliver">Deliver</a>

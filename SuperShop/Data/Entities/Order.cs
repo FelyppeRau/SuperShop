@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace SuperShop.Data.Entities
 {
-    public class Order : IEntity
+    public class Order : IEntity 
     {
         public int Id { get; set; }
 
